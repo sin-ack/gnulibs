@@ -68,3 +68,5 @@ TODO: Add documentation on how to use this together with `zig cc` (requires furt
 ## License
 
 Copyright &copy; 2024, sin-ack. This software is released under the GNU General Public License, version 3.
+
+The contents of the generated tarballs are under the same license as `libstdc++` ([GNU General Public License version 3, with the GCC Runtime Library Exception version 3.1](https://gcc.gnu.org/onlinedocs/libstdc++/manual/license.html)).
