@@ -57,8 +57,7 @@ function determine_host_triplet {
     # bail silently.
     host_triplet="$(
         set +e
-        host_triplet="$("${cc_exe}" -dumpmachine)"
-        if [[ $? -ne 0 ]]; then
+        if ! host_triplet="$("${cc_exe}" -dumpmachine)"; then
             echo "!!! Your compiler (${cc_exe}) does not understand -dumpmachine! Please make sure you have GCC or Clang installed." >&2
             exit 1
         fi
