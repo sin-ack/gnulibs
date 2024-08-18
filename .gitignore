@@ -1,0 +1,13 @@
+# The crosstool config file. None of them should be committed at the top level.
+/.config
+/.config.old
+
+# The crosstool-generated include directory, which is automatically generated when
+# `ct-ng menuconfig' is executed.
+/include
+
+# The work directory, where intermediate targets are built.
+/work
+
+# The out directory where generated packages are placed.
+/out
