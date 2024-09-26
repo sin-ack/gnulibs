@@ -1,0 +1,45 @@
+From 4a92299c0af43f78a0e8f8b81e5e1ad549b86d96 Mon Sep 17 00:00:00 2001
+From: sin-ack <sin-ack@protonmail.com>
+Date: Thu, 26 Sep 2024 11:32:37 +0200
+Subject: [PATCH] libstdc++-v3: Check glibc version before including
+ sys/single_threaded.h
+
+Zig always provides sys/single_threaded.h, but only provides the symbol
+if the Glibc version is >= 2.32. Instead of checking for the header's
+existence, do a Glibc version check instead.
+---
+ libstdc++-v3/include/ext/atomicity.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/libstdc++-v3/include/ext/atomicity.h b/libstdc++-v3/include/ext/atomicity.h
+index bc9a1ef..89f38de 100644
+--- a/libstdc++-v3/include/ext/atomicity.h
++++ b/libstdc++-v3/include/ext/atomicity.h
+@@ -31,10 +31,14 @@
+ 
+ #pragma GCC system_header
+ 
++#if __GLIBC_PREREQ (2, 32)
++# define _GLIBCXX_HAS_SYS_SINGLE_THREADED 1
++#endif
++
+ #include <bits/c++config.h>
+ #include <bits/gthr.h>
+ #include <bits/atomic_word.h>
+-#if __has_include(<sys/single_threaded.h>)
++#if _GLIBCXX_HAS_SYS_SINGLE_THREADED
+ # include <sys/single_threaded.h>
+ #endif
+ 
+@@ -48,7 +52,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
+   {
+ #ifndef __GTHREADS
+     return true;
+-#elif __has_include(<sys/single_threaded.h>)
++#elif _GLIBCXX_HAS_SYS_SINGLE_THREADED
+     return ::__libc_single_threaded;
+ #else
+     return !__gthread_active_p();
+-- 
+2.44.2
+
