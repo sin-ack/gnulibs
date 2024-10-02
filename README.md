@@ -1,13 +1,18 @@
-# Static `libstdc++`
+# gnulibs
 
-Generate tarballs for GCC's `libstdc++` for many targets.
+Generate tarballs for GNU C++ and support libraries for many targets.
 
 ## What is this?
 
 This script uses [crosstool-ng](https://crosstool-ng.github.io/) to generate
-a basic GCC cross-compiler, and uses this to compile libstdc++. It then packages
-the generated artifacts, removes unnecessary files, and generates a tarball with
-only the static `libstdc++`/`libsupc++` libraries and GNU STL headers.
+a basic GCC cross-compiler, and uses this to compile:
+
+- `libstdc++`
+- `libgcc`
+- `libatomic`
+
+It then packages the generated artifacts, removes unnecessary files, and
+generates a tarball with only the libraries and GNU STL headers.
 
 ## Why?
 
@@ -30,21 +35,6 @@ The use-case I am trying to solve involves using
 with Bazel to cross-compile a project. However, since there are pre-existing
 binaries with the GNU STL ABI as mentioned above, this becomes impossible. This
 project is intended to solve this.
-
-Because the main incompatibility is the STL ABI itself and not the other bits,
-the intention is to use the smallest amount of GNU libraries possible. To
-achieve this, this project strips down a standard `libstdc++` install to only
-the library files and includes required. It also enables the use of `experimental`
-headers which are not present in `libc++` for legacy codebases.
-
-Once included, the final configuration looks like:
-- `libunwind` from LLVM (replacing `gcc_s`/`gcc_eh`)
-- `compiler_rt` from LLVM (replacing `libgcc`)
-- `libstdc++` from GNU
-- `libsupc++` from GNU
-
-Thanks to the Itanum exception handling ABI, this mix-match configuration seems
-to work.
 
 ## Requirements
 
