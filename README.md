@@ -53,6 +53,23 @@ following targets are built:
 - `aarch64-linux-gnu`
 - `x86_64-linux-gnu`
 
+To use these libraries, you will need the following compile flags:
+
+- `-nostdinc++ -nostdlib++ -nodefaultlibs` (prevent your compiler from automatically linking in your system libraries)
+- Include paths:
+  + `-isystem path/to/gnulibs/include`
+  + `-isystem path/to/gnulibs/include/backward`
+  + `-isystem path/to/gnulibs/include/target` (This is renamed to be target-independent)
+  
+You also need these link flags:
+
+- `-nostdinc++ -nostdlib++ -nodefaultlibs`
+- Library path: `-Lpath/to/gnulibs/lib`
+- The libraries you need: `-lc -lgcc -lstdc++ -latomic`
+  + Might make sense to use `-Wl,--as-needed` to reduce the amount you have to link.
+- When linking shared objects/dynamic executables, add `-lgcc_s`
+- When linking a static binary, add `-lgcc_eh`
+
 TODO: Add documentation on how to use this together with `zig cc` (requires further testing)
 
 ## License
