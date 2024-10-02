@@ -359,6 +359,9 @@ function package_libstdcxx {
     mv "${package_root_dir}/include-tmp/c++/${version}" "${package_root_dir}/include"
     rm -rd "${package_root_dir}/include-tmp"
 
+    echo ">>>   Renaming include/${target} to include/target to make it target-agnostic"
+    mv "${package_root_dir}/include/${target}" "${package_root_dir}/include/target"
+
     echo ">>>   Running tar"
     mkdir -p "${OUT_DIR}"
     tar --transform "flags=r;s#^#gnu-${version}-${target}/#" -cJf "${OUT_DIR}/gnu-${version}-${target}.tar.xz" -C "${package_root_dir}" "lib" "include"
